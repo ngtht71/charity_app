@@ -65,12 +65,12 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
                 method: "wallet_addEthereumChain",
                 params: [
                   {
-                    chainId: "0x5",
-                    chainName: "Goerli Test network",
-                    rpcUrls: ["https://goerli.infura.io/v3/"],
-                    blockExplorerUrls: ["https://goerli.etherscan.io/"],
+                    chainId: "0xaa36a7",
+                    chainName: "Sepolia Test Network",
+                    rpcUrls: ["https://sepolia.infura.io/v3/"],
+                    blockExplorerUrls: ["https://sepolia.etherscan.io/"],
                     nativeCurrency: {
-                      symbol: "GoerliETH",
+                      symbol: "SepoliaETH",
                       decimals: 18,
                     },
                   },

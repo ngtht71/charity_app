@@ -9,13 +9,24 @@ const API_URL = process.env.API_URL;
 const ETHER_SCAN_API_KEY = process.env.ETHER_SCAN_API_KEY;
 
 // provider
+// function getProvider() {
+//   const alchemyProvider = new ethers.providers.AlchemyProvider(
+//     "sepolia",
+//     API_KEY
+//   );
+//   return alchemyProvider;
+// }
+
 function getProvider() {
-  const alchemyProvider = new ethers.providers.AlchemyProvider(
-    "goerli",
-    API_KEY
+  // if (!API_KEY) console.log(`No Alchemy API Key ${API_KEY} found in env variables`);
+
+  const provider = new ethers.providers.JsonRpcProvider(
+    `https://eth-mainnet.g.alchemy.com/v2/29OYxFhjxv4R0O3HPyBCC`
   );
-  return alchemyProvider;
+
+  return provider;
 }
+
 
 // signer
 function getSigner() {

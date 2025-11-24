@@ -5,6 +5,8 @@ async function main() {
   const CharityRegistry = await ethers.getContractFactory("CharityRegistry");
   const charityRegistry = await CharityRegistry.deploy();
 
+  await charityRegistry.deployed();
+
   console.log(`CharityRegistry has been deployed to ${charityRegistry.address}`);
 }
 

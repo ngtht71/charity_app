@@ -90,7 +90,7 @@ function Causes({ charities }: { charities: Charity[] }) {
                     active={charity.active}
                     wallet={charity.wallet}
                     donationProps={{ setCharity, toggleDonationModal }}
-                    // toggleModal={toggleDonationModal}
+                  // toggleModal={toggleDonationModal}
                   />
                 ))}
               </>

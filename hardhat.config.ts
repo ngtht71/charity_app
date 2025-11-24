@@ -61,13 +61,13 @@ const { API_URL, PRIVATE_KEY } = process.env;
 
 const config: HardhatUserConfig = {
   solidity: "0.8.9",
-  defaultNetwork: "goerli",
+  defaultNetwork: "sepolia",
   networks: {
     hardhat: {},
     localhost: {
       url: "http://127.0.0.1:8545",
     },
-    goerli: {
+    sepolia: {
       url: API_URL,
       accounts: [`0x${PRIVATE_KEY}`],
     },
