@@ -1,4 +1,4 @@
-import { HardhatUserConfig, task } from "hardhat/config";
+import { HardhatUserConfig, task } from "hardhat/config.js";
 import "@nomicfoundation/hardhat-toolbox";
 import * as fs from "fs";
 import * as path from "path";
@@ -36,7 +36,7 @@ async function copyAbis(src: string, dest: string) {
     } else if (file.endsWith(".json") && !file.endsWith("dbg.json")) {
       // Copy the file if it has a ".json" extension
       const data = fs.readFileSync(fullSrc);
-      fs.writeFileSync(fullDest, data);
+      fs.writeFileSync(fullDest, data.toString());
     }
   }
 }
@@ -59,19 +59,24 @@ task(
 
 const { API_URL, PRIVATE_KEY } = process.env;
 
+const networksConfig: HardhatUserConfig['networks'] = {
+  hardhat: {},
+  localhost: {
+    url: "http://127.0.0.1:8545",
+  },
+};
+
+if (API_URL && PRIVATE_KEY) {
+  networksConfig.sepolia = {
+    url: API_URL,
+    accounts: [`0x${PRIVATE_KEY}`],
+  };
+}
+
 const config: HardhatUserConfig = {
   solidity: "0.8.9",
-  defaultNetwork: "sepolia",
-  networks: {
-    hardhat: {},
-    localhost: {
-      url: "http://127.0.0.1:8545",
-    },
-    sepolia: {
-      url: API_URL,
-      accounts: [`0x${PRIVATE_KEY}`],
-    },
-  },
+  // defaultNetwork: "sepolia",
+  networks: networksConfig,
 };
 
 export default config;

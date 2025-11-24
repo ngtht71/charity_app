@@ -1,14 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Head from "next/head";
 import { AppContext } from "@/context/AppContext";
 import FormProvider from "@/context/FormContext";
 import AddCharity from "@/components/AddCharity";
-import { GetServerSideProps } from "next";
-import { loadContract } from "@/utils/interactions";
 import Charity, { DefaultCharity } from "@/components/Charity";
 import DonationProvider from "@/context/DonationContext";
 import Modal from "@/components/Modal";
 import Donate from "@/components/Donate";
+import { CharityContext } from "@/context/CharityContext";
 
 interface Charity {
   id: number;
@@ -20,11 +19,25 @@ interface Charity {
   wallet: string;
 }
 
-function Causes({ charities }: { charities: Charity[] }) {
+function Causes() {
+  // Local state to hold charities fetched on the client side
+  const [charities, setCharities] = useState<Charity[]>([]);
   // Modal control for create charity form
   const [showModal, setShowModal] = useState(false);
 
-  const { isOwner } = useContext(AppContext);
+  const { isOwner, connected } = useContext(AppContext);
+  const { getCharities } = useContext(CharityContext);
+
+  // Fetch charities on the client side
+  useEffect(() => {
+    const fetchCharities = async () => {
+      const charitiesData = await getCharities();
+      setCharities(charitiesData);
+    };
+
+    fetchCharities();
+  }, [getCharities]);
+
 
   // Modal control for donation modal
   const [showDonationModal, setShowDonationModal] = useState(false);
@@ -61,17 +74,31 @@ function Causes({ charities }: { charities: Charity[] }) {
               </div>
 
               <div className="mt-6 md:mt-0">
-                {isOwner ? (
-                  <button
-                    title=""
-                    className="inline-flex items-center justify-center px-5 py-3 text-xs font-bold tracking-widest text-gray-500 uppercase transition-all duration-200 bg-transparent border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 hover:bg-gray-100 hover:text-gray-900"
-                    role="button"
-                    onClick={() => setShowModal(true)}
-                  >
-                    Create Charity
-                  </button>
-                ) : (
-                  <div></div>
+                <button
+                  title={
+                    !connected
+                      ? "Connect wallet to create charities"
+                      : isOwner
+                        ? "Create a new charity"
+                        : "Only owner can create charities"
+                  }
+                  className={`inline-flex items-center justify-center px-5 py-3 text-xs font-bold tracking-widest text-gray-500 uppercase transition-all duration-200 bg-transparent border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 ${!isOwner ? "opacity-50 cursor-not-allowed hover:bg-transparent" : "hover:bg-gray-100 hover:text-gray-900"
+                    }`}
+                  role="button"
+                  onClick={() => {
+                    if (isOwner) setShowModal(true);
+                  }}
+                  disabled={!isOwner}
+                >
+                  Create Charity
+                </button>
+
+                {!connected && (
+                  <p className="text-xs text-gray-400 mt-2">Connect your wallet to use this feature.</p>
+                )}
+
+                {connected && !isOwner && (
+                  <p className="text-xs text-gray-400 mt-2">Only the contract owner can create charities.</p>
                 )}
               </div>
             </div>
@@ -89,6 +116,8 @@ function Causes({ charities }: { charities: Charity[] }) {
                     totalDonation={charity.totalDonation}
                     active={charity.active}
                     wallet={charity.wallet}
+                    image={(charity as any).image}
+                    description={(charity as any).description}
                     donationProps={{ setCharity, toggleDonationModal }}
                   // toggleModal={toggleDonationModal}
                   />
@@ -118,38 +147,5 @@ function Causes({ charities }: { charities: Charity[] }) {
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  let charities: Charity[] = [];
-  try {
-    const contract = loadContract();
-    const count = await contract?.charityIdCounter();
-    console.log(`count: ${count}`);
-
-    // Fetch all charities
-    for (let i = 0; i < count; i++) {
-      // Fetch charity by ID since ID is the same as index
-      const charity = await contract?.charities(i);
-
-      // Parse charity data
-      charities.push({
-        id: i,
-        name: charity.name,
-        mission: charity.mission,
-        website: charity.website,
-        totalDonation: charity.totalDonation.toString(), // conversion from BN for successful serialization
-        active: charity.active,
-        wallet: charity.wallet.toLowerCase(),
-      });
-    }
-    console.log(charities);
-  } catch (err) {
-    console.log(err);
-  }
-
-  return {
-    props: { charities },
-  };
-};
 
 export default Causes;

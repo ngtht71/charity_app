@@ -18,7 +18,7 @@ export const AppContext = createContext<AppContextType>({
   connected: false,
   isOwner: false,
   account: "",
-  connectWallet: async () => {},
+  connectWallet: async () => { },
   latestDonation: 0,
   error: "",
 });
@@ -102,8 +102,12 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
           setAccount(accounts[0]);
           ensureNetwork();
           const owner = await contract?.owner();
-          if (owner.toLowerCase() == accounts[0].toLowerCase())
+          console.log(`contract owner: ${owner}, connected account: ${accounts[0]}`);
+          if (owner && owner.toLowerCase() == accounts[0].toLowerCase()) {
             setIsOwner(true);
+          } else {
+            setIsOwner(false);
+          }
         }
       } catch (err: any) {
         setError(err.message);
@@ -127,8 +131,12 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
           setAccount(accounts[0]);
           ensureNetwork();
           const owner = await contract?.owner();
-          if (owner.toLowerCase() == accounts[0].toLowerCase())
+          console.log(`contract owner: ${owner}, connected account: ${accounts[0]}`);
+          if (owner && owner.toLowerCase() == accounts[0].toLowerCase()) {
             setIsOwner(true);
+          } else {
+            setIsOwner(false);
+          }
         }
       } catch (err: any) {
         setError(err.message);

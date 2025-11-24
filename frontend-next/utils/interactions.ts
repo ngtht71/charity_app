@@ -21,7 +21,7 @@ function getProvider() {
   // if (!API_KEY) console.log(`No Alchemy API Key ${API_KEY} found in env variables`);
 
   const provider = new ethers.providers.JsonRpcProvider(
-    `https://eth-mainnet.g.alchemy.com/v2/29OYxFhjxv4R0O3HPyBCC`
+    `http://127.0.0.1:8545/`
   );
 
   return provider;

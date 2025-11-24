@@ -1,4 +1,4 @@
-import { ethers } from "hardhat";
+import { ethers, run } from "hardhat";
 
 async function main() {
 
@@ -8,6 +8,11 @@ async function main() {
   await charityRegistry.deployed();
 
   console.log(`CharityRegistry has been deployed to ${charityRegistry.address}`);
+
+  // Copy ABI file to the frontend
+  console.log("Copying ABI to frontend...");
+  await run("copy-abis");
+  console.log("ABI copied successfully!");
 }
 
 main().catch((error) => {

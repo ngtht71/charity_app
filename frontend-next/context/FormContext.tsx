@@ -21,6 +21,8 @@ export const FormContext = createContext({
     website: "",
     active: false,
     wallet: "",
+    image: "",
+    description: "",
   },
   // @ts-expect-error For some reason Dispatch' does not exist on React
   setFormData: React.Dispatch<
@@ -30,10 +32,30 @@ export const FormContext = createContext({
       website: string;
       active: boolean;
       wallet: string;
+      image: string;
+      description: string;
     }>
   >,
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => {},
-  handleSubmit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {},
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    name: string
+  ) => { },
+  handleSubmit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => { },
+  addCharity: async (
+    name: string,
+    mission: string,
+    website: string,
+    active: boolean,
+    wallet: string
+  ) => { },
+  updateCharity: async (
+    charityId: number,
+    name: string,
+    mission: string,
+    website: string,
+    active: boolean,
+    wallet: string
+  ) => { },
 });
 
 function FormProvider({ children }: { children: React.ReactNode }) {
@@ -43,18 +65,21 @@ function FormProvider({ children }: { children: React.ReactNode }) {
     website: "",
     active: false,
     wallet: "",
+    image: "",
+    description: "",
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     name: string
   ) => {
-    if (e.target.type == "checkbox") {
-      console.log(e.target.checked);
+    const target = e.target as HTMLInputElement;
+    if (target.type == "checkbox") {
+      console.log(target.checked);
     }
     setFormData((prevState) => ({
       ...prevState,
-      [name]: e.target.type != "checkbox" ? e.target.value : e.target.checked,
+      [name]: target.type != "checkbox" ? (target.value as any) : (target.checked as any),
     }));
     console.log(formData);
   };
@@ -65,6 +90,7 @@ function FormProvider({ children }: { children: React.ReactNode }) {
     website: string,
     active: boolean,
     wallet: string
+    // image and description are saved to localStorage after tx
   ) => {
     const ethereum = await detectEthereumProvider();
     if (ethereum) {
@@ -79,7 +105,63 @@ function FormProvider({ children }: { children: React.ReactNode }) {
       );
       await tx.wait();
       console.log("-------------------------");
-      console.log(await contract?.charityIdCounter());
+      const counter = await contract?.charityIdCounter();
+      console.log(counter);
+      // store metadata (image/description) in localStorage for the new charity id
+      try {
+        const newId = Number(counter) - 1;
+        if (typeof window !== "undefined") {
+          const meta = {
+            image: formData.image || "",
+            description: formData.description || "",
+          };
+          localStorage.setItem(`charity_meta_${newId}`, JSON.stringify(meta));
+        }
+      } catch (err) {
+        console.error("Error saving charity metadata:", err);
+      }
+    } else {
+      console.error("Please install MetaMask!");
+      alert("Please install MetaMask!");
+    }
+  };
+
+  const updateCharity = async (
+    charityId: number,
+    name: string,
+    mission: string,
+    website: string,
+    active: boolean,
+    wallet: string
+  ) => {
+    const ethereum = await detectEthereumProvider();
+    if (ethereum) {
+      const contract = loadContractWithSigner();
+      try {
+        const tx = await contract?.updateCharity(
+          charityId,
+          name,
+          mission,
+          website,
+          active,
+          wallet
+        );
+        await tx.wait();
+        // update local metadata store
+        try {
+          if (typeof window !== "undefined") {
+            const meta = {
+              image: formData.image || "",
+              description: formData.description || "",
+            };
+            localStorage.setItem(`charity_meta_${charityId}`, JSON.stringify(meta));
+          }
+        } catch (err) {
+          console.error("Error saving charity metadata:", err);
+        }
+      } catch (err) {
+        console.error("updateCharity error:", err);
+      }
     } else {
       console.error("Please install MetaMask!");
       alert("Please install MetaMask!");
@@ -101,6 +183,7 @@ function FormProvider({ children }: { children: React.ReactNode }) {
         formData.website,
         formData.active,
         formData.wallet
+        // image/description persisted client-side
       );
 
       console.log("Charity added successfully");
@@ -111,7 +194,7 @@ function FormProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <FormContext.Provider
-      value={{ formData, setFormData, handleChange, handleSubmit }}
+      value={{ formData, setFormData, handleChange, handleSubmit, addCharity, updateCharity }}
     >
       {children}
     </FormContext.Provider>
