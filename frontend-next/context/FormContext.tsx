@@ -56,6 +56,14 @@ export const FormContext = createContext({
     active: boolean,
     wallet: string
   ) => { },
+  updateCharityAllowInactive: async (
+    charityId: number,
+    name: string,
+    mission: string,
+    website: string,
+    active: boolean,
+    wallet: string
+  ) => { },
 });
 
 function FormProvider({ children }: { children: React.ReactNode }) {
@@ -155,12 +163,67 @@ function FormProvider({ children }: { children: React.ReactNode }) {
               description: formData.description || "",
             };
             localStorage.setItem(`charity_meta_${charityId}`, JSON.stringify(meta));
+            // notify other parts of the app that a charity was updated
+            try {
+              window.dispatchEvent(new CustomEvent("charityUpdated", { detail: { id: charityId } }));
+            } catch (e) {
+              console.warn("could not dispatch charityUpdated event", e);
+            }
           }
         } catch (err) {
           console.error("Error saving charity metadata:", err);
         }
       } catch (err) {
         console.error("updateCharity error:", err);
+      }
+    } else {
+      console.error("Please install MetaMask!");
+      alert("Please install MetaMask!");
+    }
+  };
+
+  // Allow updating charity even if it's currently inactive on-chain by calling
+  // the new contract method `updateCharityAllowInactive` (requires redeploy).
+  const updateCharityAllowInactive = async (
+    charityId: number,
+    name: string,
+    mission: string,
+    website: string,
+    active: boolean,
+    wallet: string
+  ) => {
+    const ethereum = await detectEthereumProvider();
+    if (ethereum) {
+      const contract = loadContractWithSigner();
+      try {
+        const tx = await contract?.updateCharityAllowInactive(
+          charityId,
+          name,
+          mission,
+          website,
+          active,
+          wallet
+        );
+        await tx.wait();
+        try {
+          if (typeof window !== "undefined") {
+            const meta = {
+              image: formData.image || "",
+              description: formData.description || "",
+            };
+            localStorage.setItem(`charity_meta_${charityId}`, JSON.stringify(meta));
+            try {
+              window.dispatchEvent(new CustomEvent("charityUpdated", { detail: { id: charityId } }));
+            } catch (e) {
+              console.warn("could not dispatch charityUpdated event", e);
+            }
+          }
+        } catch (err) {
+          console.error("Error saving charity metadata:", err);
+        }
+      } catch (err) {
+        console.error("updateCharityAllowInactive error:", err);
+        throw err;
       }
     } else {
       console.error("Please install MetaMask!");
@@ -194,7 +257,7 @@ function FormProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <FormContext.Provider
-      value={{ formData, setFormData, handleChange, handleSubmit, addCharity, updateCharity }}
+      value={{ formData, setFormData, handleChange, handleSubmit, addCharity, updateCharity, updateCharityAllowInactive }}
     >
       {children}
     </FormContext.Provider>

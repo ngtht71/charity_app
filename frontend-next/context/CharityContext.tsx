@@ -1,7 +1,7 @@
 "use client";
 import detectEthereumProvider from "@metamask/detect-provider";
 import React, { createContext, useEffect, useState } from "react";
-import { loadContractWithSigner } from "../utils/interactions";
+import { loadContractWithSigner, loadContract } from "../utils/interactions";
 import { ethers } from "ethers";
 
 interface Charity {
@@ -20,12 +20,22 @@ interface CharityContextType {
   charities: Charity[];
   setCharitiesData: (charities: Charity[]) => void;
   getCharities: () => Promise<Charity[]>;
+  getDonations: (charityId: number) => Promise<{
+    donor: string;
+    amount: string;
+    txHash: string;
+    blockNumber: number;
+    timestamp?: number;
+  }[]>;
 }
 
 export const CharityContext = createContext<CharityContextType>({
   charities: [],
   setCharitiesData: (charities: Charity[]) => { },
   getCharities: async () => {
+    return [];
+  },
+  getDonations: async (charityId: number) => {
     return [];
   },
 });
@@ -99,6 +109,42 @@ function CharityProvider({ children }: { children: React.ReactNode }) {
     return charities;
   };
 
+  const getDonations = async (charityId: number) => {
+    try {
+      // use provider-based contract to query events
+      const providerContract = loadContractWithSigner();
+      // loadContractWithSigner returns contract with signer; for queryFilter, provider contract is fine
+      const readContract = loadContract();
+      const contract = readContract || providerContract;
+      if (!contract) return [];
+
+      const filter = contract.filters.DonationMade(charityId);
+      const events = await contract.queryFilter(filter, 0, "latest");
+      const results: any[] = [];
+      for (const ev of events) {
+        const donor = ev.args?.donor;
+        const amount = ev.args?.amount;
+        const txHash = ev.transactionHash;
+        const blockNumber = ev.blockNumber || 0;
+        let timestamp: number | undefined = undefined;
+        try {
+          const provider = contract.provider;
+          const block = await provider.getBlock(blockNumber);
+          if (block) timestamp = block.timestamp;
+        } catch (e) {
+          // ignore
+        }
+        results.push({ donor, amount: amount?.toString(), txHash, blockNumber, timestamp });
+      }
+      // sort by blockNumber desc
+      results.sort((a, b) => b.blockNumber - a.blockNumber);
+      return results;
+    } catch (err) {
+      console.error("getDonations error:", err);
+      return [];
+    }
+  };
+
   // const getCharities = async () => {
   //   return [];
   // };
@@ -120,7 +166,7 @@ function CharityProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <CharityContext.Provider
-      value={{ getCharities, charities, setCharitiesData }}
+      value={{ getCharities, charities, setCharitiesData, getDonations }}
     >
       {children}
     </CharityContext.Provider>
