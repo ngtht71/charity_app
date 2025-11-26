@@ -29,7 +29,7 @@ npx hardhat run --network localhost scripts/deploy.ts
 **Run the recreate charity on chain Script**
 
 ```bash
-npx hardhat run --network localhost script/recreateOnChain.ts
+npx hardhat run --network localhost scripts/recreateOnChain.ts
 ```
 
 **Terminal 3:**
