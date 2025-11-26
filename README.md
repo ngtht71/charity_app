@@ -2,6 +2,56 @@
 
 ![A green world](/frontend-next/public/images/green.jpg)
 
+Chạy dự án của mình
+
+**Terminal 1:**
+
+**Install the dependencies**
+
+```bash
+npm install
+```
+
+**Start Hardhat node**
+
+```bash
+npx hardhat node
+```
+
+**Terminal 2:**
+
+**Run the deploy Script**
+
+```bash
+npx hardhat run --network localhost scripts/deploy.ts
+```
+
+**Run the recreate charity on chain Script**
+
+```bash
+npx hardhat run --network localhost script/recreateOnChain.ts
+```
+
+**Terminal 3:**
+
+**Navigate to the client-side folder:**
+
+```bash
+cd frontend-next
+```
+
+**Install the client dependencies:**
+
+```bash
+npm install
+```
+
+Start the development server for client app:
+
+```bash
+npm run dev
+```
+
 Welcome to Dress The Earth, a web3 dapp that allows users to donate ethers to trusted charities of their choosing. Our platform is built with Next.js and utilizes TypeScript and Tailwind CSS to provide a clean and user-friendly experience.
 
 ## Features
