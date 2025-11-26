@@ -10,7 +10,7 @@ function Community() {
   return (
     <>
       <Head>
-        <title>Dress The Earth - Community</title>
+        <title>VietTrust - Community</title>
         <meta
           name="description"
           content="The Green Charity Transparency Platform"
@@ -22,7 +22,7 @@ function Community() {
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 font-pj">
-              Begin your journey with Dress The Earth
+              Khởi đầu hành trình lan tỏa cùng VietTrust
             </h2>
           </div>
 
@@ -76,8 +76,8 @@ function Community() {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
                           d="M10 3C10.5523 3 11 3.44772 11 4V9H16C16.5523 9 17 9.44772 17 10C17 10.5523 16.5523 11 16 11H11V16C11 16.5523 10.5523 17 10 17C9.44772 17 9 16.5523 9 16V11H4C3.44772 11 3 10.5523 3 10C3 9.44771 3.44772 9 4 9L9 9V4C9 3.44772 9.44772 3 10 3Z"
                         />
                       </svg>
@@ -86,11 +86,12 @@ function Community() {
                   </div>
 
                   <h3 className="text-xl font-bold text-gray-900 font-pj mt-11">
-                    Join our community
+                    Gia nhập mạng lưới những "Người kiến tạo niềm tin"
                   </h3>
                   <p className="mt-3 text-base font-normal leading-7 text-gray-600">
-                    Join the revolution of like-minded individuals striving to
-                    make a difference in the world.
+                    Hãy trở thành một phần của cộng đồng những người tiên phong ứng dụng công
+                    nghệ để minh bạch hóa hoạt động thiện nguyện. Tại đây, chúng ta không chỉ
+                    quyên góp, mà còn cùng nhau giám sát và chia sẻ những giá trị tốt đẹp.
                   </p>
 
                   <Link
@@ -101,7 +102,7 @@ function Community() {
                     className="inline-flex items-center justify-center px-8 py-3 mt-8 text-base font-bold text-white transition-all duration-200 bg-green border border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 font-pj hover:bg-opacity-90 rounded-xl"
                     role="button"
                   >
-                    Join Now
+                    Tham gia ngay
                   </Link>
                 </div>
               </div>
@@ -139,11 +140,12 @@ function Community() {
                   </div>
 
                   <h3 className="text-xl font-bold text-gray-900 font-pj mt-11">
-                    Would you like to volunteer with us?
+                    Bạn muốn đóng góp nhiều hơn cả tài chính?
                   </h3>
                   <p className="mt-3 text-base font-normal leading-7 text-gray-600">
-                    Make a real impact in your community by joining our team of
-                    volunteers.
+                    Hãy tạo ra tác động thực tế bằng cách trở thành Tình nguyện viên của VietTrust.
+                    Chúng tôi luôn cần những người bạn đồng hành trong việc xác minh hoàn cảnh,
+                    hỗ trợ kỹ thuật và lan tỏa thông điệp đến cộng đồng
                   </p>
 
                   <a
@@ -154,7 +156,7 @@ function Community() {
                     className="inline-flex items-center justify-center px-8 py-3 mt-8 text-base font-bold text-gray-900 transition-all duration-200 border-2 border-gray-400 rounded-xl font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 hover:bg-green focus:bg-green hover:text-white focus:text-white hover:border-gray-900 focus:border-gray-900"
                     role="button"
                   >
-                    Contact Us
+                    Tìm hiểu thêm
                   </a>
                 </div>
               </div>
@@ -166,11 +168,10 @@ function Community() {
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-4xl font-bold text-gray-900 font-pj">
-              Join 💚 the community
+              Gia nhập 💚 Đại gia đình VietTrust
             </h2>
             <p className="max-w-md mx-auto mt-5 text-base font-normal text-gray-600 font-pj">
-              Let&apos;s save our Earth, it&apos;s the only planet with
-              chocolate.
+              Hạnh phúc không phải là đích đến mà là hành trình chúng ta sẻ chia cùng nhau.
             </p>
           </div>
 
@@ -219,14 +220,14 @@ function Community() {
                             rounded-xl
                         "
                 >
-                  Get started now
+                  Đăng ký
                 </button>
               </div>
             </form>
           </div>
 
           <p className="mt-6 text-sm font-normal text-center text-gray-400 font-pj">
-            Reduce. Reuse. Recycle.
+            Minh bạch. Sẻ chia. Bền vững.
           </p>
         </div>
       </section>

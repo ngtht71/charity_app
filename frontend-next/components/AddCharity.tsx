@@ -87,6 +87,8 @@ function AddCharity({
         wallet: initialData.wallet || "",
         image: initialData.image || "",
         description: initialData.description || "",
+        // coerce persisted goal to number when possible
+        goalEth: typeof initialData.goalEth !== 'undefined' && initialData.goalEth !== '' ? Number(initialData.goalEth) : (typeof initialData.targetEth !== 'undefined' && initialData.targetEth !== '' ? Number(initialData.targetEth) : ''),
       };
       setFormData((prev: any) => ({ ...prev, ...normalized }));
     }
@@ -113,9 +115,9 @@ function AddCharity({
           }}
         >
           <div className="px-6 py-6 sm:p-8">
-            <p className="text-xl font-bold text-gray-900">{isEdit ? "Edit Charity" : "Create Charity"}</p>
+            <p className="text-xl font-bold text-gray-900">{isEdit ? "Chỉnh sửa thông tin quỹ" : "Tạo quỹ mới"}</p>
             <p className="mt-3 text-sm font-medium text-gray-500">
-              Only admins are allowed to add a new charity organization.
+              Chỉ quản trị viên mới được phép thêm quỹ mới.
             </p>
 
             {errorMsg && (
@@ -127,13 +129,13 @@ function AddCharity({
             <div className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="" className="text-sm font-bold text-gray-900">Name</label>
+                  <label htmlFor="" className="text-sm font-bold text-gray-900">Tên quỹ</label>
                   <div className="mt-2">
                     <input
                       type="text"
                       name="name"
                       id="name"
-                      placeholder="Rain & Earth"
+                      placeholder="Chiến dịch Mùa đông ấm 2025"
                       value={formData?.name || ""}
                       className="block w-full px-4 py-3 placeholder-gray-500 border border-gray-300 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm caret-indigo-600"
                       onChange={(e) => handleChange(e, e.currentTarget.name)}
@@ -142,13 +144,13 @@ function AddCharity({
                 </div>
 
                 <div>
-                  <label htmlFor="mission" className="text-sm font-bold text-gray-900">Mission</label>
+                  <label htmlFor="mission" className="text-sm font-bold text-gray-900">Sứ mệnh</label>
                   <div className="mt-2">
                     <input
                       type="text"
                       name="mission"
                       id="mission"
-                      placeholder="Sustainable Agriculture"
+                      placeholder="Trao tặng 1000 áo ấm cho trẻ em vùng cao"
                       value={formData?.mission || ""}
                       className="block w-full px-4 py-3 placeholder-gray-500 border border-gray-300 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm caret-indigo-600"
                       onChange={(e) => handleChange(e, e.currentTarget.name)}
@@ -172,7 +174,7 @@ function AddCharity({
                 </div>
 
                 <div>
-                  <label htmlFor="wallet" className="text-sm font-bold text-gray-900">Wallet Address</label>
+                  <label htmlFor="wallet" className="text-sm font-bold text-gray-900">Địa chỉ ví</label>
                   <div className="mt-2">
                     <input
                       type="text"
@@ -186,8 +188,25 @@ function AddCharity({
                   </div>
                 </div>
 
+                <div>
+                  <label htmlFor="goalEth" className="text-sm font-bold text-gray-900">Mục tiêu (ETH)</label>
+                  <div className="mt-2">
+                    <input
+                      type="number"
+                      name="goalEth"
+                      id="goalEth"
+                      placeholder="10"
+                      value={typeof formData?.goalEth !== 'undefined' && formData?.goalEth !== '' ? formData.goalEth : ""}
+                      className="block w-full px-4 py-3 placeholder-gray-500 border border-gray-300 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm caret-indigo-600"
+                      onChange={(e) => handleChange(e, e.currentTarget.name)}
+                      step="0.01"
+                      min="0"
+                    />
+                  </div>
+                </div>
+
                 <div className="md:col-span-2">
-                  <label htmlFor="image" className="text-sm font-bold text-gray-900">Background Image</label>
+                  <label htmlFor="image" className="text-sm font-bold text-gray-900">Ảnh nền</label>
                   <div className="mt-2 flex items-center gap-3">
                     <input
                       type="file"
@@ -197,7 +216,7 @@ function AddCharity({
                     />
                   </div>
                   <div className="mt-3">
-                    <p className="text-xs text-gray-500">Or paste an image URL below</p>
+                    <p className="text-xs text-gray-500">Hoặc dán URL ảnh bên dưới</p>
                     <input
                       type="text"
                       name="image"
@@ -210,19 +229,19 @@ function AddCharity({
                   </div>
                   {formData?.image && (
                     <div className="mt-3">
-                      <p className="text-xs text-gray-500">Preview:</p>
+                      <p className="text-xs text-gray-500">Xem trước:</p>
                       <img src={formData.image} alt="preview" className="w-full h-36 object-cover rounded-md mt-2" />
                     </div>
                   )}
                 </div>
 
                 <div className="md:col-span-2">
-                  <label htmlFor="description" className="text-sm font-bold text-gray-900">Description</label>
+                  <label htmlFor="description" className="text-sm font-bold text-gray-900">Mô tả</label>
                   <div className="mt-2">
                     <textarea
                       name="description"
                       id="description"
-                      placeholder="A longer description about the charity and project..."
+                      placeholder="Chi tiết về hoàn cảnh, kế hoạch giải ngân cụ thể và cam kết minh bạch..."
                       rows={5}
                       value={formData?.description || ""}
                       className="block w-full px-4 py-3 placeholder-gray-500 border border-gray-300 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm caret-indigo-600"
@@ -237,7 +256,7 @@ function AddCharity({
                       htmlFor="activate-checkbox"
                       className="ext-sm font-bold text-gray-900"
                     >
-                      Activate now
+                      Kích hoạt ngay
                     </label>
                     <input
                       id="activate-checkbox"
@@ -268,14 +287,14 @@ function AddCharity({
                     className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold leading-5 text-white transition-all duration-200 bg-indigo-600 border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 hover:bg-indigo-500"
                     onClick={(e) => handleSubmitForm(e)}
                   >
-                    {isEdit ? "Update" : "Add"}
+                    {isEdit ? "Cập nhật" : "Thêm"}
                   </button>
                 ) : (
                   <button
                     type="submit"
                     className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold leading-5 text-white transition-all duration-200 bg-indigo-600 border border-transparent rounded-md animate-pulse focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 hover:bg-indigo-500 cursor-not-allowed pointer-events-none"
                   >
-                    {isEdit ? "Update" : "Add"}
+                    {isEdit ? "Cập nhật" : "Thêm"}
                   </button>
                 )}
                 {/* <button

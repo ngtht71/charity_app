@@ -1,183 +1,98 @@
-import Link from "next/link";
-import React from "react";
+"use client";
 
-function CharitySpotlight() {
+import Link from "next/link";
+import React, { useContext, useEffect, useState } from "react";
+import { CharityContext } from "@/context/CharityContext";
+import { compressAddress } from "@/utils/helper";
+import { ethers } from "ethers";
+
+export default function CharitySpotlight() {
+  const { getCharities } = useContext(CharityContext);
+  const [featured, setFeatured] = useState<any[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const all = await getCharities();
+        // pick top 3 active charities as featured
+        const picks = (all || []).filter((c: any) => c.active).slice(0, 3);
+        if (mounted) setFeatured(picks);
+      } catch (e) {
+        console.warn("Failed to load charities for spotlight", e);
+      }
+    };
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, [getCharities]);
+
+  const renderProgress = (charity: any) => {
+    // default goal (in ether) if not provided
+    const defaultGoalEth = 10;
+    const totalDonationWei = charity.totalDonation || '0';
+    let totalEth = 0;
+    try {
+      totalEth = parseFloat(ethers.utils.formatEther(totalDonationWei.toString()));
+    } catch (e) {
+      totalEth = Number(totalDonationWei) || 0;
+    }
+    const goalEth = (typeof charity.goalEth !== 'undefined' && charity.goalEth !== null && charity.goalEth !== '' ? Number(charity.goalEth) : (typeof charity.targetEth !== 'undefined' && charity.targetEth !== null && charity.targetEth !== '' ? Number(charity.targetEth) : defaultGoalEth));
+    const percent = Math.min(100, Math.round((totalEth / goalEth) * 100));
+    return (
+      <div className="mt-4">
+        <div className="flex items-center justify-between mb-1">
+          <div className="text-sm font-medium text-gray-700">Tiến độ</div>
+          <div className="text-sm font-medium text-gray-700">{percent}%</div>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-3">
+          <div className="bg-green h-3 rounded-full" style={{ width: `${percent}%` }} />
+        </div>
+        <div className="mt-2 text-sm text-gray-500">Đã đạt: {totalEth} / {goalEth} ETH</div>
+      </div>
+    );
+  };
+
   return (
     <section className="py-12 bg-white sm:py-16 lg:py-20">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 font-pj">
-              Top curated charities. Spotlighting the green effort!
-            </h2>
-            <p className="mt-4 text-base leading-7 text-gray-600 sm:mt-8 font-pj">
-              Meet our top favorite charities of the week
-            </p>
+        <div className="flex flex-col items-start">
+          <div className="text-center w-full">
+            <h2 className="text-4xl font-bold text-gray-900 font-pj">CHIẾN DỊCH NỔI BẬT</h2>
+            <p className="mt-2 text-base leading-7 text-gray-600">Các dự án đang rất cần giúp đỡ chung tay của các bạn</p>
           </div>
 
-          <div className="flex flex-col items-center justify-center mt-8 sm:space-x-5 sm:flex-row md:order-3 md:mt-16">
-            <a
-              href="https://linktr.ee/dresstheearth"
-              target="_blank"
-              rel="noreferrer"
-              title=""
-              className="inline-flex items-center justify-center w-full px-6 py-3 text-lg font-bold text-white transition-all duration-200 bg-green border-2 border-transparent sm:w-auto rounded-xl shadow-md font-pj hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-              role="button"
-            >
-              Add your charity
-            </a>
-
-            <Link
-              href="/causes"
-              title=""
-              className="
-                        inline-flex
-                        items-center
-                        justify-center
-                        w-full
-                        px-6
-                        py-3
-                        mt-4
-                        text-lg
-                        font-bold
-                        text-gray-900
-                        transition-all
-                        duration-200
-                        border-2 border-gray-400
-                        sm:w-auto sm:mt-0
-                        rounded-xl
-                        shadow-md
-                        font-pj
-                        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900
-                        hover:bg-green
-                        focus:bg-green
-                        hover:bg-opacity-90
-                        hover:text-white
-                        focus:text-white    
-                        focus:border-gray-900
-                    "
-              role="button"
-            >
-              Get started now
-            </Link>
-          </div>
-
-          <div className="relative mt-8 md:mt-16 md:order-2">
-            <div className="absolute -inset-1">
-              <div
-                className="w-full h-full max-w-full opacity-30 blur-lg filter"
-                style={{
-                  background:
-                    "linear-gradient(90deg, #44ff9a -0.55%, #44b0ff 22.86%, #8b44ff 48.36%, #ff6644 73.33%, #ebff70 99.34%)",
-                }}
-              ></div>
-            </div>
-
-            <div className="relative grid max-w-lg grid-cols-1 overflow-hidden border border-gray-200 divide-y divide-gray-200 md:max-w-none md:grid-cols-3 rounded-xl md:divide-x md:divide-y-0">
-              <div className="flex flex-col overflow-hidden">
-                <div className="flex flex-col justify-between flex-1 p-6 bg-white lg:py-9 lg:px-10">
-                  <div className="flex-1">
-                    <a
-                      href="https://sustyvibes.org"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <img
-                        className="w-auto h-9"
-                        src="/images/sustyvibes.png"
-                        alt="sustyvibes"
-                      />
-                    </a>
+          <div className="mt-6 w-full grid grid-cols-1 gap-6 md:grid-cols-3">
+            {featured.length === 0 ? (
+              <div className="text-sm text-gray-500">No featured campaigns yet.</div>
+            ) : (
+              featured.map((c: any) => (
+                <div key={c.id} className="p-4 border rounded-lg">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <Link href={`/causes/${c.id}`} className="text-lg font-semibold text-gray-900">{c.name}</Link>
+                      <p className="mt-1 text-sm text-gray-600">{c.mission}</p>
+                    </div>
+                    {/* <div className="text-sm text-gray-500">ID #{c.id}</div> */}
                   </div>
 
-                  <div className="mt-10">
-                    <blockquote>
-                      <p className="text-lg text-gray-900 font-pj">
-                        “Young people with a passion for a just world come
-                        together to connect and design new ways of living”
-                      </p>
-                    </blockquote>
-                    <p className="mt-8 text-lg font-bold text-gray-900 font-pj">
-                      Sustyvibes
-                    </p>
-                    <p className="mt-1 text-base text-gray-600 font-pj">
-                      Ibadan, Nigeria
-                    </p>
+                  {renderProgress(c)}
+
+                  <div className="mt-4 text-sm text-gray-600">
+                    <div><strong>Ví:</strong> <a className="text-indigo-600" href={`https://sepolia.etherscan.io/address/${c.wallet}`} target="_blank" rel="noreferrer">{compressAddress(c.wallet)}</a></div>
+                  </div>
+
+                  <div className="mt-4 flex items-center space-x-2">
+                    {/* <Link href={`/causes/${c.id}`} className="text-sm font-semibold text-indigo-600 underline">Xem chi tiết</Link> */}
+                    <Link href={`/causes?donate=${c.id}`} className="ml-2 text-sm text-white bg-green px-3 py-2 rounded-md">Gây quỹ</Link>
                   </div>
                 </div>
-              </div>
-
-              <div className="flex flex-col overflow-hidden">
-                <div className="flex flex-col justify-between flex-1 p-6 bg-white lg:py-9 lg:px-10">
-                  <div className="flex-1">
-                    <a
-                      href="https://reswaye.org"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <img
-                        className="w-auto h-16"
-                        src="/images/reswaye.png"
-                        alt="reswaye"
-                      />
-                    </a>
-                  </div>
-
-                  <div className="mt-10">
-                    <blockquote>
-                      <p className="text-lg text-gray-900 font-pj">
-                        “RESWAYE is one of the biggest women-network recyclers
-                        on the coastline of the West Africa continent”
-                      </p>
-                    </blockquote>
-                    <p className="mt-8 text-lg font-bold text-gray-900 font-pj">
-                      RESWAYE
-                    </p>
-                    <p className="mt-1 text-base text-gray-600 font-pj">
-                      Lagos, Nigeria
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col overflow-hidden">
-                <div className="flex flex-col justify-between flex-1 p-6 bg-white lg:py-9 lg:px-10">
-                  <div className="flex-1">
-                    <a
-                      href="https://ecobarter.africa"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <img
-                        className="w-auto h-10"
-                        src="images/ecobarter.png"
-                        alt=""
-                      />
-                    </a>
-                  </div>
-
-                  <div className="mt-10">
-                    <blockquote>
-                      <p className="text-lg text-gray-900 font-pj">
-                        “Earn points every time you recycle with us to redeem
-                        either as cash, health insurance”
-                      </p>
-                    </blockquote>
-                    <p className="mt-8 text-lg font-bold text-gray-900 font-pj">
-                      Ecobarter
-                    </p>
-                    <p className="mt-1 text-base text-gray-600 font-pj">
-                      Abuja, Nigeria
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+              ))
+            )}
           </div>
         </div>
       </div>
     </section>
   );
 }
-
-export default CharitySpotlight;

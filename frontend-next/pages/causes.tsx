@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 import Head from "next/head";
 import { AppContext } from "@/context/AppContext";
 import FormProvider from "@/context/FormContext";
@@ -14,7 +15,8 @@ interface Charity {
   name: string;
   mission: string;
   website: string;
-  totalDonation: number;
+  // wei string
+  totalDonation: string;
   active: boolean;
   wallet: string;
 }
@@ -27,6 +29,7 @@ function Causes() {
 
   const { isOwner, connected } = useContext(AppContext);
   const { getCharities } = useContext(CharityContext);
+  const router = useRouter();
 
   // Fetch charities on the client side
   useEffect(() => {
@@ -49,10 +52,31 @@ function Causes() {
     setCharityIdSelector(charityId);
   };
 
+  // Open donation modal if query param present (e.g., /causes?donate=1)
+  useEffect(() => {
+    const donateParam = router.query?.donate;
+    if (!donateParam) return;
+
+    const id = Number(donateParam);
+    if (isNaN(id)) return;
+
+    // Wait until charities are loaded and find the array index for the requested id
+    if (charities.length === 0) return;
+
+    const index = charities.findIndex((c) => Number((c as any).id) === id);
+    if (index === -1) {
+      // No matching charity found; do not open modal
+      return;
+    }
+
+    setCharityIdSelector(index);
+    setShowDonationModal(true);
+  }, [router.query, charities]);
+
   return (
     <div>
       <Head>
-        <title>Dress The Earth - Our Causes</title>
+        <title>VietTrust - Our Causes</title>
         <meta
           name="description"
           content="The Green Charity Transparency Platform"
@@ -66,10 +90,10 @@ function Causes() {
             <div className="text-center md:flex md:items-end md:space-x-6 md:justify-between md:text-left">
               <div className="flex-1 max-w-sm mx-auto md:mx-0">
                 <h2 className="text-2xl font-bold text-gray-800">
-                  Featured Causes 💚
+                  Những hoàn cảnh khó khăn
                 </h2>
                 <p className="mt-4 text-base font-medium text-gray-500">
-                  Empower positive impact, explore green communities.
+                  Nối liền khoảng cách bằng lòng tốt, nâng đỡ những mảnh đời trên khắp Việt Nam.
                 </p>
               </div>
 
@@ -90,15 +114,15 @@ function Causes() {
                   }}
                   disabled={!isOwner}
                 >
-                  Create Charity
+                  Tạo quỹ mới
                 </button>
 
                 {!connected && (
-                  <p className="text-xs text-gray-400 mt-2">Connect your wallet to use this feature.</p>
+                  <p className="text-xs text-gray-400 mt-2">Kết nối ví của bạn để sử dụng tính năng này.</p>
                 )}
 
                 {connected && !isOwner && (
-                  <p className="text-xs text-gray-400 mt-2">Only the contract owner can create charities.</p>
+                  <p className="text-xs text-gray-400 mt-2">Chỉ contract owner mới có thể tạo quỹ.</p>
                 )}
               </div>
             </div>
@@ -123,7 +147,7 @@ function Causes() {
                   />
                 ))}
               </>
-              <DefaultCharity toggleModal={toggleDonationModal} />
+              {/* <DefaultCharity toggleModal={toggleDonationModal} /> */}
             </div>
 
             <DonationProvider>

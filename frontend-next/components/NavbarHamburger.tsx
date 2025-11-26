@@ -25,11 +25,11 @@ function NavbarHamburger() {
     <nav>
       <div className="px-1 py-8">
         <div className="grid gap-y-7">
-          <NavbarHamburgerItem label="Causes" href="/causes" />
-          <NavbarHamburgerItem label="Shop" href="/shop" />
-          <NavbarHamburgerItem label="Community" href="/community" />
-          <NavbarHamburgerItem label="About" href="/about" />
-          <NavbarHamburgerItem label="Dashboard" href="/dashboard" />
+          <NavbarHamburgerItem label="Dự án" href="/causes" />
+          <NavbarHamburgerItem label="Cửa hàng" href="/shop" />
+          <NavbarHamburgerItem label="Cộng đồng" href="/community" />
+          <NavbarHamburgerItem label="Giới thiệu" href="/about" />
+          <NavbarHamburgerItem label="Bảng điều khiển" href="/dashboard" />
           <ConnectWallet />
         </div>
       </div>

@@ -24,13 +24,13 @@ function Navbar() {
   return (
     <>
       <nav className="hidden lg:flex lg:items-center lg:justify-center lg:space-x-12">
-        <NavbarItem label="Causes" href="/causes" />
-        <NavbarItem label="Shop" href="/shop" />
-        <NavbarItem label="Community" href="/community" />
-        <NavbarItem label="About" href="/about" />
+        <NavbarItem label="Dự án" href="/causes" />
+        <NavbarItem label="Cửa hàng" href="/shop" />
+        <NavbarItem label="Cộng đồng" href="/community" />
+        <NavbarItem label="Giới thiệu" href="/about" />
       </nav>
       <nav className="hidden lg:flex lg:items-center lg:justify-end lg:space-x-10">
-        <NavbarItem label="Dashboard" href="/dashboard" />
+        <NavbarItem label="Bảng điều khiển" href="/dashboard" />
         <ConnectWallet />
       </nav>
     </>

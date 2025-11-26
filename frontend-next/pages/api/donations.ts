@@ -1,0 +1,68 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import fs from 'fs';
+import path from 'path';
+
+const DATA_DIR = path.resolve(process.cwd(), 'data');
+const DATA_FILE = path.join(DATA_DIR, 'donations.json');
+
+async function ensureDataFile() {
+  try {
+    await fs.promises.mkdir(DATA_DIR, { recursive: true });
+    try {
+      await fs.promises.access(DATA_FILE, fs.constants.F_OK);
+    } catch (e) {
+      await fs.promises.writeFile(DATA_FILE, JSON.stringify({}), 'utf8');
+    }
+  } catch (err) {
+    console.error('Failed to ensure donations data file', err);
+    throw err;
+  }
+}
+
+async function readAll() {
+  await ensureDataFile();
+  const raw = await fs.promises.readFile(DATA_FILE, 'utf8');
+  try {
+    return JSON.parse(raw || '{}');
+  } catch (e) {
+    return {};
+  }
+}
+
+async function writeAll(data: any) {
+  await ensureDataFile();
+  await fs.promises.writeFile(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    if (req.method === 'GET') {
+      const all = await readAll();
+      const id = req.query.id as string | undefined;
+      if (id !== undefined) {
+        const list = all[id] || [];
+        return res.status(200).json(list);
+      }
+      return res.status(200).json(all);
+    }
+
+    if (req.method === 'POST') {
+      const body = req.body;
+      const charityId = (body && (body.charityId ?? body.id)) as number | string | undefined;
+      const donation = body && body.donation ? body.donation : null;
+      if (charityId === undefined || donation === null) {
+        return res.status(400).json({ error: 'Missing charityId or donation in request body' });
+      }
+      const all = await readAll();
+      if (!Array.isArray(all[charityId])) all[charityId] = [];
+      all[charityId].push(donation);
+      await writeAll(all);
+      return res.status(200).json({ ok: true, charityId, donation });
+    }
+
+    return res.status(405).json({ error: 'Method not allowed' });
+  } catch (err: any) {
+    console.error('donations API error', err);
+    return res.status(500).json({ error: err?.message || String(err) });
+  }
+}

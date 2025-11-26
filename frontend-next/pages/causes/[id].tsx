@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { CharityContext } from "@/context/CharityContext";
 import AddCharity from "@/components/AddCharity";
@@ -52,19 +53,23 @@ export default function CharityDetailPage() {
   if (!charity) {
     return (
       <div className="px-6 py-12 max-w-4xl mx-auto">
-        <p className="text-gray-500">Loading charity...</p>
+        <p className="text-gray-500">Đang tải thông tin quỹ...</p>
       </div>
     );
   }
 
   return (
     <>
+      <Head>
+        <title>{`VietTrust - Quỹ ${charity.name}`}</title>
+        <meta name="description" content={`Chi tiết và lịch sử quyên góp cho quỹ ${charity.name}`} />
+      </Head>
       <div className="px-6 py-12 max-w-4xl mx-auto">
         <button
           className="mb-6 text-sm text-gray-600 underline"
           onClick={() => router.back()}
         >
-          &larr; Back
+          &larr; Quay lại
         </button>
 
         {charity.image && (
@@ -83,10 +88,10 @@ export default function CharityDetailPage() {
         {isOwner && (
           <div className="mt-4">
             <button
-              className="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
+              className="inline-flex items-center px-3 py-2 text-sm font-semibold text-gray bg-[#FFE4B5] rounded-md hover:bg-[#FFDA94]"
               onClick={() => setShowEditModal(true)}
             >
-              Edit Charity
+              Chỉnh sửa thông tin
             </button>
           </div>
         )}
@@ -98,41 +103,46 @@ export default function CharityDetailPage() {
               href={charity.website}
               target="_blank"
               rel="noreferrer"
-              className="text-indigo-600 underline"
+              className="text-gray-600 underline"
             >
               {charity.website}
             </a>
           </p>
 
           <p>
-            <strong>Wallet:</strong>{" "}
+            <strong>Ví:</strong>{" "}
             <a
-              href={`https://goerli.etherscan.io/address/${charity.wallet}`}
+              href={`https://sepolia.etherscan.io/address/${charity.wallet}`}
               target="_blank"
               rel="noreferrer"
-              className="text-indigo-600 underline"
+              className="text-gray-600 underline"
             >
               {compressAddress(charity.wallet)}
             </a>
           </p>
 
           <p>
-            <strong>Total Donation:</strong>{" "}
+            <strong>Tổng quyên góp:</strong>{" "}
             {ethers.utils.formatEther(charity.totalDonation.toString())} ETH
           </p>
 
           <p>
-            <strong>Status:</strong>{" "}
+            <strong>Mục tiêu:</strong>{" "}
+            {((typeof charity.goalEth !== 'undefined' && charity.goalEth !== null && charity.goalEth !== '') ? `${charity.goalEth} ETH` : (typeof charity.targetEth !== 'undefined' && charity.targetEth !== null && charity.targetEth !== '' ? `${charity.targetEth} ETH` : '—'))}
+          </p>
+
+          <p>
+            <strong>Trạng thái:</strong>{" "}
             {charity.active ? (
-              <span className="text-green-600">Active</span>
+              <span className="text-green-600">Hoạt động</span>
             ) : (
-              <span className="text-red-600">Inactive</span>
+              <span className="text-red-600">Ngưng hoạt động</span>
             )}
           </p>
 
           {charity.description && (
             <div className="mt-4">
-              <h3 className="text-lg font-semibold">About</h3>
+              <h3 className="text-lg font-semibold">Giới thiệu</h3>
               <p className="mt-2 text-gray-700 whitespace-pre-line">
                 {charity.description}
               </p>
@@ -141,23 +151,23 @@ export default function CharityDetailPage() {
         </div>
 
         <div className="mt-8">
-          <h3 className="text-lg font-semibold">Donation History</h3>
+          <h3 className="text-lg font-semibold">Lịch sử quyên góp</h3>
           {donations.length === 0 ? (
-            <p className="mt-2 text-sm text-gray-500">No donations yet.</p>
+            <p className="mt-2 text-sm text-gray-500">Chưa có quyên góp nào.</p>
           ) : (
             <div className="mt-3 space-y-3">
               {donations.map((d: any, idx: number) => (
                 <div key={d.txHash || idx} className="p-3 border rounded-md">
                   <div className="flex justify-between text-sm">
                     <div className="text-gray-700">
-                      <strong>Donor:</strong> {compressAddress(d.donor)}
+                      <strong>Người quyên góp:</strong> {compressAddress(d.donor)}
                     </div>
                     <div className="text-gray-500">
                       {d.timestamp ? new Date(d.timestamp * 1000).toLocaleString() : `Block ${d.blockNumber}`}
                     </div>
                   </div>
                   <div className="mt-1 text-sm text-gray-700">
-                    <strong>Amount:</strong> {ethers.utils.formatEther(d.amount.toString())} ETH
+                    <strong>Số tiền:</strong> {ethers.utils.formatEther(d.amount.toString())} ETH
                   </div>
                   <div className="mt-1 text-xs text-gray-500">
                     Tx: <span className="font-mono">{d.txHash}</span>

@@ -6,7 +6,7 @@ function About() {
   return (
     <>
       <Head>
-        <title>Dress The Earth - About</title>
+        <title>VietTrust - About</title>
         <meta
           name="description"
           content="The Green Charity Transparency Platform"
@@ -18,11 +18,11 @@ function About() {
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto xl:max-w-4xl">
             <h1 className="text-3xl font-bold text-gray-900 mt-7 sm:text-4xl xl:text-5xl font-pj">
-              About Dress The Earth
+              Về chúng tôi
             </h1>
             <p className="inline-flex items-center px-3 py-2 mt-7 text-sm font-pj font-medium text-green rounded-xl bg-green-soft">
               {" "}
-              # The Green Charity Transparency Platform{" "}
+              # Minh bạch niềm tin, Vẹn tròn ân nghĩa{" "}
             </p>
 
             <div className="mt-10">
@@ -184,64 +184,57 @@ function About() {
 
             <div className="mt-10">
               <p className="text-base font-normal leading-7 text-gray-700 font-pj">
-                Welcome to Dress The Earth, a revolutionary web3 dapp that
-                allows donors to make direct, transparent and secure donations
-                to a wide range of trusted charities of their choosing. Our
-                platform is built on the blockchain, which ensures that all
-                donations are recorded in a tamper-proof and immutable manner.
+                Chào mừng bạn đến với VietTrust, nền tảng thiện nguyện Web3 tiên phong,
+                nơi kết nối trực tiếp những tấm lòng hảo tâm với những hoàn cảnh khó khăn
+                tại Việt Nam một cách minh bạch và an toàn tuyệt đối. Đúng như tên gọi,
+                VietTrust được sinh ra để bảo vệ và nuôi dưỡng niềm tin.
+                Được xây dựng trên nền tảng Blockchain, chúng tôi cam kết rằng mọi
+                khoản đóng góp của bạn đều được ghi nhận vĩnh viễn, không thể tẩy xóa
+                và đi đúng đến nơi cần đến mà không bị thất thoát.
               </p>
 
               <h2 className="mt-12 text-3xl font-bold text-gray-900 font-pj">
-                The Mission
+                Sứ mệnh
               </h2>
               <p className="mt-6 text-base font-normal leading-7 text-gray-700 font-pj">
-                Our mission is to empower individuals, organizations, and
-                businesses to make a positive impact on the environment by
-                supporting eco-friendly causes and organizations. We believe
-                that the collective efforts of many can lead to significant
-                change and that everyone has the power to make a difference.
+                Sứ mệnh của VietTrust là khôi phục "Niềm tin" trong hoạt động từ thiện và
+                trao quyền cho cộng đồng để tạo ra những thay đổi thực tế cho xã hội. Chúng tôi
+                tin rằng khi sự minh bạch dẫn lối, lòng tốt sẽ được lan tỏa mạnh mẽ hơn bao giờ hết.
               </p>
               <ul className="pl-5 mt-6 space-y-1 text-base font-normal leading-7 text-gray-700 list-disc list-outside font-pj">
                 <li>
-                  Promote adoption and accessibility of blockchain technology
-                  for environmental and sustainable causes.
+                  Minh bạch hóa dòng tiền: Xóa bỏ sự hoài nghi bằng công nghệ Blockchain, giúp
+                  những tấm lòng hảo tâm theo dõi "đường đi" của từng đồng quyên góp theo thời gian thực.
                 </li>
                 <li>
-                  Enable transparency and efficiency in funding of eco-friendly
-                  projects through cryptocurrency donations.
+                  Đơn giản hóa tiếp cận: Phổ cập ứng dụng Web3 vào đời sống, chứng minh rằng công nghệ
+                  không chỉ là những con số khô khan mà còn mang đậm tính nhân văn.
                 </li>
                 <li>
-                  Educate and raise awareness on the potential of blockchain
-                  technology in addressing climate crisis.
+                  Kết nối không biên giới: Tạo ra cầu nối uy tín để người Việt trong và ngoài nước có
+                  thể hỗ trợ đồng bào mình nhanh chóng, hiệu quả với chi phí thấp nhất.
                 </li>
               </ul>
 
               <h2 className="mt-12 text-3xl font-bold text-gray-900 font-pj">
-                How it Works
+                Cách thức hoạt động
               </h2>
               <p className="mt-6 text-base font-normal leading-7 text-gray-700 font-pj">
-                Dress The Earth is built on the Ethereum blockchain and allows
-                donations to be made in Ether (ETH), the native cryptocurrency
-                of the Ethereum network. Our platform is designed to be easy to
-                use, even for those who are new to blockchain technology.
+                VietTrust hoạt động trên nền tảng mạng lưới Ethereum cho phép quyên góp
+                bằng tiền mã hóa (ETH) một cách dễ dàng ngay cả với người không rành công nghệ.
               </p>
               <p className="mt-6 text-base font-normal leading-7 text-gray-700 font-pj">
-                Donors can browse through a list of carefully curated and vetted
-                eco-friendly charities, and select the one they wish to support.
-                They can then make a donation in Ether, and the funds will be
-                transferred directly to the charity&apos;s Ethereum wallet
-                address.
+                Người quyên góp có thể duyệt qua danh sách các tổ chức từ thiện được tuyển chọn kỹ lưỡng
+                và chọn tổ chức mà họ muốn hỗ trợ. Họ có thể thực hiện quyên góp bằng Ether
+                và số tiền sẽ được chuyển trực tiếp đến ví Ethereum của tổ chức từ thiện.
               </p>
               <p className="mt-6 text-base font-normal leading-7 text-gray-700 font-pj">
-                All donations on our platform are recorded on the Ethereum
-                blockchain, providing transparency and ensuring that the funds
-                are used for the intended purpose.
+                Tất cả các khoản quyên góp trên nền tảng của chúng tôi đều được ghi lại trên blockchain
+                Ethereum, đảm bảo tính minh bạch và chắc chắn rằng các quỹ được sử dụng đúng mục đích.
               </p>
               <blockquote className="pl-5 mt-8 border-l-2 border-gray-900">
                 <p className="text-lg italic font-medium text-gray-900 font-pj">
-                  “In nature, nothing is perfect and everything is perfect.
-                  Trees can be contorted, bent in weird ways, and they&apos;re
-                  still beautiful.”
+                  “Một miếng khi đói bằng một gói khi no”. Tại VietTrust, chúng tôi trân trọng từng sự đóng góp dù là nhỏ nhất.
                 </p>
               </blockquote>
 
@@ -264,50 +257,50 @@ function About() {
               </div>
 
               <h2 className="mt-16 text-3xl font-bold text-gray-900 font-pj">
-                Why Ethereum
+                Tại sao chọn Ethereum?
               </h2>
               <p className="mt-6 text-base font-normal leading-7 text-gray-700 font-pj">
-                We chose to build our platform on the Ethereum blockchain for
-                several reasons. Firstly, Ethereum is the most widely used
-                blockchain for decentralized applications and has the largest
-                developer community. This means that there are many tools and
-                resources available for building on Ethereum.
+                Chúng tôi chọn xây dựng nền tảng của mình trên blockchain Ethereum vì những đặc tính
+                không thể thay thế, giúp giải quyết triệt để các vấn đề của từ thiện truyền thống.
+                Trước hết, Ethereum là blockchain được sử dụng rộng rãi nhất cho các ứng dụng phi
+                tập trung và có cộng đồng nhà phát triển lớn nhất. Điều này có nghĩa là có nhiều
+                công cụ và tài nguyên sẵn có để phát triển trên Ethereum.
               </p>
               <p className="mt-6 text-base font-normal leading-7 text-gray-700 font-pj">
-                Ethereum is a decentralized platform, which means that it is not
-                controlled by any single entity or organization. This ensures
-                that donations on our platform cannot be censored or blocked by
-                any third party.
+                Ethereum là một nền tảng phi tập trung, có nghĩa là nó không
+                được kiểm soát bởi bất kỳ cá nhân hay tổ chức nào. Không có một "tài khoản ngân hàng cá nhân"
+                nào nắm giữ quỹ. Tiền nằm trong Smart Contract và chỉ được giải ngân khi thỏa mãn
+                các điều kiện minh bạch. Điều này đảm bảo rằng các khoản quyên góp trên nền tảng của
+                chúng tôi không thể bị kiểm duyệt hoặc chặn bởi bất kỳ bên thứ ba nào.
               </p>
               <p className="mt-6 text-base font-normal leading-7 text-gray-700 font-pj">
-                Ethereum supports smart contracts, which allows us to automate
-                the donation process and ensure that funds are only released to
-                the intended recipient.
+                Ethereum hỗ trợ các hợp đồng thông minh, cho phép chúng tôi tự động hóa
+                quá trình quyên góp, giúp loại bỏ chi phí quản lý không cần thiết,
+                đảm bảo tối đa số tiền đến tay người thụ hưởng và quỹ chỉ giải ngân cho
+                người nhận dự kiến.
               </p>
 
               <h2 className="mt-16 text-3xl font-bold text-gray-900 font-pj">
-                The Future of Dress The Earth
+                Tương lai của VietTrust
               </h2>
               <p className="mt-6 text-base font-normal leading-7 text-gray-700 font-pj">
-                At Dress The Earth, we are committed to continuously improving
-                and evolving our platform. We plan to expand the list of
-                charities on our platform, as well as adding new features such
-                as the ability for donors to track the impact of their
-                donations.
+                Tại VietTrust, chúng tôi cam kết không ngừng cải tiến
+                và phát triển nền tảng của mình. Chúng tôi dự định mở rộng danh sách
+                các tổ chức từ thiện trên nền tảng cũng như thêm các tính năng mới như
+                khả năng cho người quyên góp theo dõi tác động của các khoản đóng góp của họ.
               </p>
               <p className="mt-6 text-base font-normal leading-7 text-gray-700 font-pj">
-                In addition to our current use of the Ethereum blockchain, we
-                are also exploring the use of other blockchain networks that
-                offer cheaper transaction fees. This will allow us to reach a
-                wider range of donors and fund a greater number of sustainable
-                projects. We believe that by utilizing the latest advancements
-                in blockchain technology, we can truly &quot;Dress the
-                Earth&quot; for a sustainable future.
+                Bên cạnh việc sử dụng blockchain Ethereum hiện tại, chúng tôi cũng đang
+                khám phá việc sử dụng các mạng blockchain khác có phí giao dịch rẻ hơn.
+                Điều này sẽ cho phép chúng tôi tiếp cận được nhiều nhà quyên góp hơn và
+                tài trợ cho nhiều dự án hơn. Chúng tôi tin rằng bằng cách tận
+                dụng những tiến bộ mới nhất trong công nghệ blockchain, chúng tôi có
+                thể thực sự xây dựng một xã hội minh bạch và an toàn hơn.
               </p>
               <p className="mt-6 text-base font-normal leading-7 text-gray-700 font-pj">
-                We also plan to collaborate with other organizations and
-                businesses in the eco-friendly space to help raise awareness and
-                drive more support for these causes.
+                Chúng tôi cũng có kế hoạch xây dựng tính năng cập nhật hình ảnh/video
+                kết quả thực tế gắn liền với dự án từ thiện mà bạn đã tham gia đóng góp,
+                giúp bạn nhìn thấy rõ ràng sự thay đổi mà mình đã góp phần tạo nên.
               </p>
             </div>
           </div>

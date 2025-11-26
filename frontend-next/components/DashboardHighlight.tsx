@@ -20,47 +20,94 @@ function DashboardHighlight({ donations }: { donations: any[] }) {
     };
 
     handleBalance();
-  });
+  }, []);
+
+  const formatEth = (bn: any) => {
+    try {
+      const asBn = ethers.BigNumber.isBigNumber(bn)
+        ? bn
+        : ethers.BigNumber.from(bn || "0");
+      const asFloat = parseFloat(ethers.utils.formatEther(asBn));
+      return asFloat.toFixed(2);
+    } catch (e) {
+      return "0.00";
+    }
+  };
 
   const getTotalUserDonations = () => {
+    const acct = (account || "").toString().toLowerCase();
     let sum = ethers.BigNumber.from(0);
-    let userDonations = donations.filter((tx: any) => {
-      return tx.from === account;
+    donations.forEach((tx: any) => {
+      try {
+        const from = (tx.from || tx.fromAddress || "").toString().toLowerCase();
+        if (from && acct && from === acct) {
+          sum = sum.add(ethers.BigNumber.from(tx.value || tx.amount || "0"));
+        }
+      } catch (e) {
+        // ignore malformed
+      }
     });
-    userDonations = userDonations.map((donation) => {
-      return ethers.BigNumber.from(donation.value);
-    });
-    userDonations.forEach((value) => {
-      sum = sum.add(value);
-    });
-    return ethers.utils.formatEther(sum);
+    return formatEth(sum);
   };
 
   const getTodayUserDonations = () => {
     const today = moment().startOf("day");
-    console.log(today);
+    const acct = (account || "").toString().toLowerCase();
     let sum = ethers.BigNumber.from(0);
-    let userDonations = donations.filter((tx: any) => {
-      return tx.from === account;
-    });
-    userDonations.forEach((donation) => {
-      const donationTimestamp = moment.unix(donation.timeStamp);
-      if (today.isSame(donationTimestamp, "day")) {
-        sum = sum.add(ethers.BigNumber.from(donation.value));
+    donations.forEach((tx: any) => {
+      try {
+        const from = (tx.from || tx.fromAddress || "").toString().toLowerCase();
+        const donationTimestamp = moment.unix(tx.timeStamp || tx.timestamp || tx.time);
+        if (from && acct && from === acct && today.isSame(donationTimestamp, "day")) {
+          sum = sum.add(ethers.BigNumber.from(tx.value || tx.amount || "0"));
+        }
+      } catch (e) {
+        // ignore malformed entries
       }
     });
-    return ethers.utils.formatEther(sum);
+    return formatEth(sum);
   };
 
   const getTotalUserDonation = () => {
+    const acct = (account || "").toString().toLowerCase();
     let count = 0;
-    let userDonations = donations.filter((tx: any) => {
-      return tx.from === account;
-    });
-    userDonations.forEach((donation) => {
-      count += 1;
+    donations.forEach((tx: any) => {
+      try {
+        const from = (tx.from || tx.fromAddress || "").toString().toLowerCase();
+        if (from && acct && from === acct) count += 1;
+      } catch (e) {
+        // ignore
+      }
     });
     return count;
+  };
+
+  const getTotalDonationsAll = () => {
+    let sum = ethers.BigNumber.from(0);
+    donations.forEach((donation) => {
+      try {
+        sum = sum.add(ethers.BigNumber.from(donation.value || donation.amount || "0"));
+      } catch (e) {
+        // ignore malformed
+      }
+    });
+    return formatEth(sum);
+  };
+
+  const getTodayDonationsAll = () => {
+    const today = moment().startOf("day");
+    let sum = ethers.BigNumber.from(0);
+    donations.forEach((donation) => {
+      try {
+        const donationTimestamp = moment.unix(donation.timeStamp || donation.timestamp || donation.time);
+        if (today.isSame(donationTimestamp, "day")) {
+          sum = sum.add(ethers.BigNumber.from(donation.value || donation.amount || "0"));
+        }
+      } catch (e) {
+        // ignore malformed entries
+      }
+    });
+    return formatEth(sum);
   };
 
   // const getTotalDonations = () => {
@@ -87,7 +134,7 @@ function DashboardHighlight({ donations }: { donations: any[] }) {
       <div className="bg-white border border-gray-200 rounded-xl">
         <div className="px-5 py-4">
           <p className="text-xs font-medium tracking-wider text-gray-500 uppercase">
-            Wallet Ballance
+            Số dư ví
           </p>
           <div className="flex items-center justify-between mt-3">
             <p className="text-xl font-bold text-gray-800">{balance} ETH</p>
@@ -116,12 +163,17 @@ function DashboardHighlight({ donations }: { donations: any[] }) {
       <div className="bg-white border border-gray-200 rounded-xl">
         <div className="px-5 py-4">
           <p className="text-xs font-medium tracking-wider text-gray-500 uppercase">
-            Today&apos;s Donations
+            Số tiền quyên góp hôm nay
           </p>
           <div className="flex items-center justify-between mt-3">
-            <p className="text-xl font-bold text-gray-800">
-              {getTodayUserDonations()} ETH
-            </p>
+            <div>
+              <p className="text-xl font-bold text-gray-800">
+                {getTodayDonationsAll()} ETH
+              </p>
+              {account ? (
+                <p className="text-sm text-gray-500">Bạn: {getTodayUserDonations()} ETH</p>
+              ) : null}
+            </div>
 
             {/* <span className="inline-flex items-center text-sm font-semibold text-red-500">
               - 14%
@@ -147,12 +199,17 @@ function DashboardHighlight({ donations }: { donations: any[] }) {
       <div className="bg-white border border-gray-200 rounded-xl">
         <div className="px-5 py-4">
           <p className="text-xs font-medium tracking-wider text-gray-500 uppercase">
-            Total Donations
+            Tổng số tiền quyên góp
           </p>
           <div className="flex items-center justify-between mt-3">
-            <p className="text-xl font-bold text-gray-800">
-              {getTotalUserDonations()} ETH
-            </p>
+            <div>
+              <p className="text-xl font-bold text-gray-800">
+                {getTotalDonationsAll()} ETH
+              </p>
+              {account ? (
+                <p className="text-sm text-gray-500">Bạn: {getTotalUserDonations()} ETH</p>
+              ) : null}
+            </div>
 
             {/* <span className="inline-flex items-center text-sm font-semibold text-green-500">
               + 36%
@@ -178,7 +235,7 @@ function DashboardHighlight({ donations }: { donations: any[] }) {
       <div className="bg-white border border-gray-200 rounded-xl">
         <div className="px-5 py-4">
           <p className="text-xs font-medium tracking-wider text-gray-500 uppercase">
-            times donated
+            Số lần đã quyên góp
           </p>
           <div className="flex items-center justify-between mt-3">
             <p className="text-xl font-bold text-gray-800">

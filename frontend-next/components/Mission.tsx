@@ -5,11 +5,11 @@ const Mission = () => {
     <section className="py-12 bg-white sm:py-16 lg:py-20">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-3xl font-bold leading-tight text-gray-800 sm:text-4xl xl:text-5xl font-pj">
-            Empowering A Revolution
+          <h2 className="text-4xl font-bold leading-tight text-gray-800 sm:text-4xl xl:text-4xl font-pj">
+            TIÊN PHONG KỶ NGUYÊN THIỆN NGUYỆN SỐ
           </h2>
           <p className="mt-4 text-base leading-7 text-gray-600 sm:mt-8 font-pj">
-            Web3 Centered Giving, Become an Earth Dresser
+            Ứng dụng sức mạnh Web3 - Trở thành "Người chữa lành" cho thế giới
           </p>
         </div>
 
@@ -21,11 +21,11 @@ const Mission = () => {
               alt=""
             />
             <h3 className="mt-12 text-xl font-bold text-gray-800 font-pj">
-              Support
+              Hỗ trợ tận tâm
             </h3>
             <p className="mt-5 text-base text-gray-600 font-pj">
-              We are committed to providing top-notch customer service to ensure
-              a smooth experience for our donors in their giving journey.
+              Đội ngũ CSKH luôn sẵn sàng 24/7 để hướng dẫn bạn từng bước, đảm bảo
+              trải nghiệm quyên góp suôn sẻ nhất, ngay cả khi bạn mới làm quen với công nghệ.
             </p>
           </div>
 
@@ -36,12 +36,12 @@ const Mission = () => {
               alt=""
             />
             <h3 className="mt-12 text-xl font-bold text-gray-800 font-pj">
-              Transparency
+              Minh bạch tuyệt đối
             </h3>
             <p className="mt-5 text-base text-gray-600 font-pj">
-              We believe in honesty and integrity in fundraising, ensuring all
-              donations go directly to the chosen charity with no hidden fees or
-              commissions.
+              Chúng tôi đề cao sự trung thực và liêm chính trong việc gây quỹ, đảm bảo mọi
+              khoản quyên góp đều được chuyển thẳng trực tiếp đến tổ chức từ thiện mà không qua trung gian,
+              không có phí ẩn hoặc hoa hồng.
             </p>
           </div>
 
@@ -52,11 +52,11 @@ const Mission = () => {
               alt=""
             />
             <h3 className="mt-12 text-xl font-bold text-gray-800 font-pj">
-              Onboarding
+              Kết nối đơn giản
             </h3>
             <p className="mt-5 text-base text-gray-600 font-pj">
-              The process of donating on our website is simple, connect your
-              wallet to start supporting the charities you care about.
+              Quyên góp chưa bao giờ dễ dàng đến thế. Chỉ cần một thao tác "Kết nối ví",
+              bạn đã sẵn sàng chia sẻ yêu thương.
             </p>
           </div>
 
@@ -67,11 +67,11 @@ const Mission = () => {
               alt=""
             />
             <h3 className="mt-12 text-xl font-bold text-gray-800 font-pj">
-              Product
+              Hệ sinh thái đa dạng
             </h3>
             <p className="mt-5 text-base text-gray-600 font-pj">
-              Our platform allows donors to easily give Ethers to a variety of
-              reputable charities, all in one convenient location.
+              Nền tảng tập hợp hàng loạt tổ chức từ thiện uy tín tại một nơi duy nhất.
+              Bạn có thể dễ dàng gửi Ether (ETH) hoặc token hỗ trợ bất kỳ dự án nào bạn quan tâm.
             </p>
           </div>
 
@@ -82,12 +82,11 @@ const Mission = () => {
               alt=""
             />
             <h3 className="mt-12 text-xl font-bold text-gray-800 font-pj">
-              Quality
+              Kiểm duyệt khắt khe
             </h3>
             <p className="mt-5 text-base text-gray-600 font-pj">
-              We ensure thorough vetting and high standards of accountability
-              and impact for all charities featured on our website.
-            </p>
+              Mọi dự án xuất hiện trên website đều phải trải qua quy trình thẩm định
+              nghiêm ngặt về tính pháp lý và năng lực thực thi để bảo vệ niềm tin của bạn.            </p>
           </div>
 
           <div className="md:p-8 lg:p-14 md:border-l md:border-gray-200 md:border-t">
@@ -97,11 +96,11 @@ const Mission = () => {
               alt=""
             />
             <h3 className="mt-12 text-xl font-bold text-gray-800 font-pj">
-              Result
+              Hiệu quả thực tế
             </h3>
             <p className="mt-5 text-base text-gray-600 font-pj">
-              By using our platform, donors can trust that their contributions
-              will make a meaningful difference in the lives of those in need.
+              Với công nghệ minh bạch, bạn hoàn toàn yên tâm rằng sự đóng góp của mình
+              đang tạo ra tác động thực sự và thay đổi cuộc sống của những người cần giúp đỡ.
             </p>
           </div>
         </div>

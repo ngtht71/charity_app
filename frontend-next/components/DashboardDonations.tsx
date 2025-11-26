@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { compressAddress } from "../utils/helper";
+import { compressAddress } from "@/utils/helper";
 import { ethers } from "ethers";
 import moment from "moment";
 import { AppContext } from "@/context/AppContext";
@@ -43,7 +43,7 @@ function DefaultDonation() {
           >
             <circle cx="4" cy="4" r="3"></circle>
           </svg>
-          Failed
+          Thất bại
         </span>
       </div>
 
@@ -74,7 +74,7 @@ function DefaultDonation() {
           {compressAddress("0x9ee328c361d992A4F2B722EbeD84d82B21719858")}
         </p>
         <p className="mt-1 text-sm font-medium text-gray-500">
-          Charity Address
+          Địa chỉ quỹ từ thiện
         </p>
       </div>
 
@@ -101,13 +101,15 @@ function Donation({
   txinternal: any[];
   charities: Charity[];
 }) {
-  // Review this function for hash collision
-  const tx = txinternal.find((tx: any) => tx.hash === donation.hash);
-  // @ts-expect-error
-  const address: ethers.utils.Address = tx.to;
+  // Prefer resolving charity by charityId (set when mapping events or persisted entries).
+  // Fallback to txinternal lookup by hash if charityId is missing.
+  const tx = txinternal.find((t: any) => (t.hash || "").toString().toLowerCase() === (donation.hash || "").toString().toLowerCase());
+  const charityById = typeof donation.charityId !== "undefined" ? charities.find((c) => c.id === Number(donation.charityId)) : undefined;
+  const address = charityById?.wallet || (tx ? (tx.to || "") : "");
 
   const getCharityName = () => {
-    const charity = charities.find((c) => c.wallet === address);
+    if (charityById) return charityById.name;
+    const charity = charities.find((c) => c.wallet.toLowerCase() === (address || "").toLowerCase());
     return charity ? charity.name : "Unknown";
   };
 
@@ -122,7 +124,7 @@ function Donation({
           >
             <circle cx="4" cy="4" r="3"></circle>
           </svg>
-          Completed
+          Hoàn thành
         </span>
       </div>
 
@@ -176,7 +178,7 @@ function Donation({
 
       <div className="px-4 lg:py-4 sm:px-6 lg:col-span-2">
         <a
-          href={`https://goerli.etherscan.io/address/${address}#internaltx`}
+          href={`https://sepolia.etherscan.io/address/${address}#internaltx`}
           target="_blank"
           rel="noreferrer"
         >
@@ -184,7 +186,7 @@ function Donation({
             {compressAddress(address)}
           </p>
           <p className="mt-1 text-sm font-medium text-gray-500">
-            Charity Address
+            Địa chỉ quỹ từ thiện
           </p>
         </a>
       </div>
@@ -219,7 +221,13 @@ function DashboardDonations({
   const { connected, account } = useContext(AppContext);
 
   const userDonations = donations.filter((tx: any) => {
-    return tx.from === account;
+    try {
+      const txFrom = (tx.from || tx.fromAddress || tx.fromAddressRaw || "").toString().toLowerCase();
+      const acct = (account || "").toString().toLowerCase();
+      return txFrom === acct;
+    } catch (e) {
+      return false;
+    }
   });
 
   return (
@@ -227,9 +235,9 @@ function DashboardDonations({
       <div className="px-4 py-5 sm:p-6">
         <div className="sm:flex sm:items-start sm:justify-between">
           <div>
-            <p className="text-base font-bold text-gray-800">Your Donations</p>
+            <p className="text-base font-bold text-gray-800">Các khoản quyên góp của bạn</p>
             <p className="mt-1 text-sm font-medium text-gray-500">
-              Recent donations to your favorite causes.
+              Các khoản quyên góp gần đây cho các quỹ từ thiện yêu thích của bạn.
             </p>
           </div>
 
@@ -239,7 +247,7 @@ function DashboardDonations({
               title=""
               className="inline-flex items-center text-xs font-semibold tracking-widest text-gray-500 uppercase hover:text-gray-800"
             >
-              See all Transactions
+              Xem tất cả giao dịch
               <svg
                 className="w-4 h-4 ml-2"
                 xmlns="http://www.w3.org/2000/svg"
@@ -260,22 +268,22 @@ function DashboardDonations({
       </div>
 
       <div className="divide-y divide-gray-200">
-        {connected ? (
+        {/** Show user-specific donations when connected; otherwise show all recent donations passed in props */}
+        {(connected ? userDonations : donations).length > 0 ? (
           <>
-            {userDonations.map((donation, index) => (
+            {(connected ? userDonations : donations).map((donation, index) => (
               <Donation
-                key={index}
+                key={donation.hash || donation.txHash || index}
                 donation={donation}
                 txinternal={txinternal}
                 charities={charities}
               />
             ))}
-            <DefaultDonation />
           </>
         ) : (
           <div className="flex justify-center p-10 pb-12">
-            <div className="font-medium text-xl text-gray-300">
-              Please connect your wallet to view your account information.
+            <div className="font-medium text-xl text-gray-400">
+              Không có khoản quyên góp nào để hiển thị. Kết nối ví của bạn để xem các khoản quyên góp cá nhân.
             </div>
           </div>
         )}
