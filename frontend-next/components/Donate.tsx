@@ -67,13 +67,13 @@ function Donate({
               className="p-1 text-gray-400 transition-all duration-200 bg-white rounded-md hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
               onClick={onClose}
             >
-              <span className="sr-only"> Close </span>
+              <span className="sr-only"> Đóng </span>
               ×
             </button>
           </div>
           <div className="text-center">
-            <p className="text-lg font-semibold">Loading charity...</p>
-            <p className="mt-2 text-sm text-gray-500">Please wait while we load charity details.</p>
+            <p className="text-lg font-semibold">Đang tải thông tin tổ chức từ thiện...</p>
+            <p className="mt-2 text-sm text-gray-500">Vui lòng chờ trong giây lát!</p>
           </div>
         </div>
       ) : (
@@ -147,12 +147,12 @@ function Donate({
                 {charityId !== charityInFocus ? (
                   <>
                     <p className="mt-8 text-xl font-bold text-gray-900">
-                      You have a Pending Donation
+                      Bạn có một khoản đóng góp đang chờ xử lý
                     </p>
                     <p className="mt-3 text-base font-medium text-gray-600">
-                      Please confirm the pending donation with{" "}
-                      <span className="text-green">{charity.name}</span> in your
-                      Metamask wallet before you make another one.
+                      Vui lòng xác nhận khoản đóng góp đang chờ với{" "}
+                      <span className="text-green">{charity.name}</span>
+                      trong ví Metamask của bạn trước khi thực hiện một khoản đóng góp khác.
                     </p>
                   </>
                 ) : (
@@ -160,22 +160,21 @@ function Donate({
                     {!transactionConfirmed ? (
                       <>
                         <p className="mt-8 text-xl font-bold text-gray-900">
-                          Donation in Progress
+                          Đang xác nhận giao dịch...
                         </p>
                         <p className="mt-3 text-base font-medium text-gray-600">
-                          Please confirm this transaction in your Metamask wallet.
-                          Sit back and admire the beauty of nature while you wait.
+                          Hãy xác nhận giao dịch này trong ví Metamask của bạn.
+                          Vui lòng chờ trong giây lát.
                         </p>
                       </>
                     ) : (
                       <>
                         <p className="mt-4 text-xl font-bold text-green">
-                          Success
+                          Giao dịch thành công!
                         </p>
                         <p className="mt-3 text-base font-medium text-gray-600">
-                          Take a moment to appreciate the beauty of the world
-                          around you, knowing that you have played a part in
-                          making it a better place.
+                          Cảm ơn bạn đã đóng góp cho{" "}
+                          <span className="text-green">{charity.name}</span>.
                         </p>
                       </>
                     )}
@@ -188,7 +187,7 @@ function Donate({
                       type="button"
                       className="inline-flex items-center justify-center w-full px-6 py-4 text-xs font-bold tracking-widest text-gray-900 uppercase transition-all duration-200 bg-transparent border border-gray-900 rounded-md animate-pulse focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 hover:bg-gray-900 hover:text-white cursor-not-allowed pointer-events-none"
                     >
-                      Please Wait
+                      Vui lòng chờ...
                     </button>
                   ) : (
                     <button
@@ -196,7 +195,7 @@ function Donate({
                       className="inline-flex items-center justify-center w-full px-6 py-4 text-xs font-bold tracking-widest text-gray-900 uppercase transition-all duration-200 bg-transparent border border-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 hover:bg-gray-900 hover:text-white"
                       onClick={handleClose}
                     >
-                      Continue
+                      Tiếp tục
                     </button>
                   )}
                 </div>
@@ -211,7 +210,7 @@ function Donate({
                 className="p-1 text-gray-400 transition-all duration-200 bg-white rounded-md hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
                 onClick={onClose}
               >
-                <span className="sr-only"> Close </span>
+                <span className="sr-only"> Đóng </span>
                 <svg
                   className="w-6 h-6"
                   xmlns="http://www.w3.org/2000/svg"

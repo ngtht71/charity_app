@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Head from "next/head";
-import Modal from "@/components/Modal";
 
 function Shop() {
-  // Modal control for information
-  const [showModal, setShowModal] = useState(true);
-  const handleClose = () => setShowModal(true);
-
   return (
     <>
       <Head>
-        <title>Dress The Earth - Shop With Us</title>
+        <title>VietTrust - Cửa hàng</title>
         <meta
           name="description"
           content="The Green Charity Transparency Platform"
@@ -245,43 +240,7 @@ function Shop() {
           </div>
         </div>
       </section>
-      <Modal overlayHeader={false} isOpen={showModal} onClose={handleClose}>
-        <div className="w-full max-w-sm bg-white shadow-lg rounded-xl">
-          <div className="px-4 py-5 sm:p-6">
-            <div className="text-center">
-              <svg
-                className="w-16 h-16 mx-auto text-gray-900"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="1"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-              <p className="mt-5 text-xl font-bold text-gray-900">
-                We apologize
-              </p>
-              <p className="mt-3 text-sm font-medium text-gray-500">
-                The Shop feature is not currently available in your country. We
-                are working to bring it to your region as soon as possible.
-              </p>
-              <div className="mt-8">
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold leading-5 text-green-600 transition-all duration-200 bg-green-soft border border-transparent rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 hover:bg-indigo-600 cursor-not-allowed pointer-events-none"
-                >
-                  Were Sorry!
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Modal>
+      {/* Shop page renders normally without modal */}
     </>
   );
 }
